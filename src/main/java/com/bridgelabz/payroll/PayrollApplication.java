@@ -2,19 +2,19 @@ package com.bridgelabz.payroll;
 
 import com.bridgelabz.payroll.service.PayrollDBService;
 
-import java.sql.Connection;
+import com.bridgelabz.payroll.service.PayrollDBService;
 
 public class PayrollApplication {
 
     public static void main(String[] args) {
 
-        try (Connection connection =
-                     PayrollDBService.getConnection()) {
+        try {
+            PayrollDBService service = new PayrollDBService();
 
-            System.out.println("Connection Established Successfully!");
+            service.readData()
+                    .forEach(System.out::println);
 
         } catch (Exception e) {
-            System.out.println("Connection Failed!");
             e.printStackTrace();
         }
     }
