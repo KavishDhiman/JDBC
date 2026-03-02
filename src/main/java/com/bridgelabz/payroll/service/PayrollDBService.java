@@ -168,4 +168,46 @@ public class PayrollDBService {
 
         return employeeList;
     }
+    // =========================================================
+// UC5 – Retrieve Employees by Date Range
+// =========================================================
+
+    public List<EmployeePayrollData> getEmployeesByDateRange(
+            LocalDate startDate, LocalDate endDate)
+            throws PayrollDBException {
+
+        List<EmployeePayrollData> employeeList = new ArrayList<>();
+
+        String query =
+                "SELECT * FROM employee_payroll WHERE start BETWEEN ? AND ?";
+
+        try (PreparedStatement ps =
+                     connection.prepareStatement(query)) {
+
+            ps.setDate(1, Date.valueOf(startDate));
+            ps.setDate(2, Date.valueOf(endDate));
+
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                double salary = resultSet.getDouble("salary");
+                String gender = resultSet.getString("gender");
+                LocalDate start =
+                        resultSet.getDate("start").toLocalDate();
+
+                employeeList.add(
+                        new EmployeePayrollData(
+                                id, name, salary, gender, start));
+            }
+
+        } catch (SQLException e) {
+            throw new PayrollDBException(
+                    "Error retrieving employees by date range");
+        }
+
+        return employeeList;
+    }
 }
