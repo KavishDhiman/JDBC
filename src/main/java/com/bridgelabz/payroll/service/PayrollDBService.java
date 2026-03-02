@@ -210,4 +210,46 @@ public class PayrollDBService {
 
         return employeeList;
     }
+    // =========================================================
+// UC6 – Aggregate Salary Statistics by Gender
+// =========================================================
+
+    public void getSalaryStatisticsByGender()
+            throws PayrollDBException {
+
+        String query =
+                "SELECT gender, " +
+                        "SUM(salary) AS total_salary, " +
+                        "AVG(salary) AS avg_salary, " +
+                        "MIN(salary) AS min_salary, " +
+                        "MAX(salary) AS max_salary, " +
+                        "COUNT(*) AS employee_count " +
+                        "FROM employee_payroll GROUP BY gender";
+
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            while (resultSet.next()) {
+
+                String gender = resultSet.getString("gender");
+                double total = resultSet.getDouble("total_salary");
+                double avg = resultSet.getDouble("avg_salary");
+                double min = resultSet.getDouble("min_salary");
+                double max = resultSet.getDouble("max_salary");
+                int count = resultSet.getInt("employee_count");
+
+                System.out.println("Gender: " + gender);
+                System.out.println("Total Salary: " + total);
+                System.out.println("Average Salary: " + avg);
+                System.out.println("Minimum Salary: " + min);
+                System.out.println("Maximum Salary: " + max);
+                System.out.println("Employee Count: " + count);
+                System.out.println("----------------------------------");
+            }
+
+        } catch (SQLException e) {
+            throw new PayrollDBException(
+                    "Error performing aggregate salary calculations");
+        }
+    }
 }

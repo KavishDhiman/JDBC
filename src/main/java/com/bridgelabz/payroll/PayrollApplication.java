@@ -11,10 +11,7 @@ public class PayrollApplication {
         try {
             PayrollDBService service = PayrollDBService.getInstance();
 
-            service.getEmployeesByDateRange(
-                    LocalDate.of(2017, 1, 1),
-                    LocalDate.now()
-            ).forEach(System.out::println);
+            service.getSalaryStatisticsByGender();
 
         } catch (PayrollDBException e) {
             e.printStackTrace();
