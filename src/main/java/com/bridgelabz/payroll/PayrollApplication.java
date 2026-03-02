@@ -2,14 +2,14 @@ package com.bridgelabz.payroll;
 
 import com.bridgelabz.payroll.service.PayrollDBService;
 
-import com.bridgelabz.payroll.service.PayrollDBService;
-
 public class PayrollApplication {
 
     public static void main(String[] args) {
 
         try {
             PayrollDBService service = new PayrollDBService();
+
+            service.updateSalary("Terisa", 3500000);
 
             service.readData()
                     .forEach(System.out::println);

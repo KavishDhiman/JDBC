@@ -51,4 +51,27 @@ public class PayrollDBService {
 
         return employeeList;
     }
+    public void updateSalary(String name, double salary)
+            throws PayrollDBException {
+
+        String query = String.format(
+                "UPDATE employee_payroll SET salary = %f WHERE name = '%s'",
+                salary, name);
+
+        try (Connection connection = getConnection();
+             Statement statement = connection.createStatement()) {
+
+            int rowsAffected = statement.executeUpdate(query);
+
+            if (rowsAffected == 0) {
+                throw new PayrollDBException("Employee not found!");
+            }
+
+            System.out.println("Salary updated successfully in DB.");
+
+        } catch (SQLException e) {
+            throw new PayrollDBException(
+                    "Error updating employee salary");
+        }
+    }
 }
