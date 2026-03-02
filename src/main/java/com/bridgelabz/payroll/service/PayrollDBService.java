@@ -51,6 +51,33 @@ public class PayrollDBService {
 
         return employeeList;
     }
+    public void updateSalaryUsingPreparedStatement(String name, double salary)
+            throws PayrollDBException {
+
+        String query =
+                "UPDATE employee_payroll SET salary = ? WHERE name = ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement(query)) {
+
+            preparedStatement.setDouble(1, salary);
+            preparedStatement.setString(2, name);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected == 0) {
+                throw new PayrollDBException("Employee not found!");
+            }
+
+            System.out.println("Salary updated using PreparedStatement.");
+
+        } catch (SQLException e) {
+            e.printStackTrace();   // 👈 VERY IMPORTANT
+            throw new PayrollDBException(
+                    "Error updating salary using PreparedStatement");
+        }
+    }
     public void updateSalary(String name, double salary)
             throws PayrollDBException {
 
