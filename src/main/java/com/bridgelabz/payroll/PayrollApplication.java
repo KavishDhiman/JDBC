@@ -1,5 +1,5 @@
 package com.bridgelabz.payroll;
-import java.sql.SQLException;
+
 import com.bridgelabz.payroll.exception.PayrollDBException;
 import com.bridgelabz.payroll.service.PayrollDBService;
 
@@ -8,11 +8,10 @@ public class PayrollApplication {
     public static void main(String[] args) {
 
         try {
-            PayrollDBService service = new PayrollDBService();
+            PayrollDBService service =
+                    PayrollDBService.getInstance();
 
-            service.updateSalaryUsingPreparedStatement("Terisa", 4000000);
-
-            service.readData()
+            service.getEmployeeByName("Terisa")
                     .forEach(System.out::println);
 
         } catch (PayrollDBException e) {
